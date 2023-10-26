@@ -1,0 +1,73 @@
+import random
+
+def encrypt_password(password):
+    encrypted_password = ""
+    offset = 3
+
+    # 将每个字符的ASCII码加上它在字符串中的位置(1开始)和偏移值3
+    for i, char in enumerate(password):
+        encrypted_char = chr(ord(char) + i + offset)
+        encrypted_password += encrypted_char
+
+    # 将字符串的第一位和最后一位调换顺序
+    encrypted_password = encrypted_password[-1] + encrypted_password[1:-1] + encrypted_password[0]
+
+    # 将字符串反转
+    encrypted_password = encrypted_password[::-1]
+
+    return encrypted_password
+
+def decrypt_password(encrypted_password):
+    decrypted_password = ""
+
+    # 将字符串反转
+    encrypted_password = encrypted_password[::-1]
+
+    # 将字符串的第一位和最后一位调换顺序
+    encrypted_password = encrypted_password[-1] + encrypted_password[1:-1] + encrypted_password[0]
+
+    offset = 3
+
+    # 将每个字符的ASCII码减去它在字符串中的位置(1开始)和偏移值3
+    for i, char in enumerate(encrypted_password):
+        decrypted_char = chr(ord(char) - i - offset)
+        decrypted_password += decrypted_char
+
+    return decrypted_password
+
+def check_password_strength(password):
+    # 判断密码强度的规则可以根据需要进行扩展和修改
+    if len(password) < 6:
+        return "弱"
+    elif len(password) < 10:
+        return "中"
+    else:
+        return "强"
+
+def generate_password(length):
+    characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    password = ""
+
+    for _ in range(length):
+        password += random.choice(characters)
+
+    return password
+
+# 测试加密功能
+password = input("请输入要加密的密码：")
+encrypted_password = encrypt_password(password)
+print("加密后的密码：", encrypted_password)
+
+# 测试解密功能
+decrypted_password = decrypt_password(encrypted_password)
+print("解密后的密码：", decrypted_password)
+
+# 测试判断密码强度功能
+password = input("请输入要判断强度的密码：")
+strength = check_password_strength(password)
+print("密码强度：", strength)
+
+# 测试生成密码功能
+length = int(input("请输入要生成的密码长度："))
+generated_password = generate_password(length)
+print("生成的密码：", generated_password)
